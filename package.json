@@ -1,0 +1,17 @@
+{
+    "name": "student-sign-in-api",
+    "description": "SSI API Vue/Express app",
+    "author": "Aiden",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "pg": "^8.7.1",
+        "sequelize": "^6.12.0-beta.1"
+    },
+    "devDependencies": {
+        "sqlite3": "^5.0.2"
+    }
+}
