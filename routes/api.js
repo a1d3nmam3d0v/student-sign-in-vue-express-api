@@ -2,20 +2,17 @@ let express = require('express')
 let db = require('../models') 
 let Student = db.Student
 
-
 let router = express.Router()
 
-
-router.get('/students', function (req, res, next) { 			      //fetches student data
-	Student.findAll( {order: ['present','name']}).then( students => { // and converts
-		return res.json(students)                   				  // into json
-	}).catch( err => next(err))
+router.get('/students', function (req, res, next) { 			 
+	Student.findAll( {order: ['present','starID']}).then( students => {
+		return res.json(students) //	↖ sorted by present, starID             				  
+	}).catch( err => next(err)) 
 })
 
-
 router.post('/students', function (req, res, next) {
-	Student.create(req.body).then( (data) => { // req.body contains json from Vue client in the req 
-		return res.status(201).send('ok') // always send response (201 = created)
+	Student.create(req.body).then( (data) => { // req.body contains JSON from Vue client 
+		return res.status(201).send('ok')	// 201 response = created
 	}).catch(err => {
 		// User errors:
 		// respond w/ 400 Bad Request err code, include err msgs
@@ -23,12 +20,10 @@ router.post('/students', function (req, res, next) {
 			let messages = err.errors.map((e) => e.message)
 			return res.status(400).json(messages)
 		}
-		//otherwise, unexpected (server err) 
-		return next(err)
+		return next(err) // otherwise, unexpected (Server err)
 	})
 })
-
-// patch = edit a student
+// patch = edit
 router.patch('/students/:id', function (req, res, next) {
 	let studentID = req.params.id 
 	let updatedStudent = req.body 
@@ -36,7 +31,7 @@ router.patch('/students/:id', function (req, res, next) {
 		.then( (rowsModified) => {
 			
 			let numberOfRowsModified = rowsModified[0] 
-												// # of rows change
+												// # of rows change-
 			if (numberOfRowsModified == 1) {	// if 1 row is changed
 				return res.send('OKAY')			// no error
 			}
@@ -52,11 +47,10 @@ router.patch('/students/:id', function (req, res, next) {
 				return res.status(400).json(messages)
 				// otherwise, its an unexpected err
 			} else {
-				return next(err) // passed on to err handler
+				return next(err) // pass on to err handler
 		}
 	})  
 })
-
 router.delete('/students/:id', function (req, res, next) {
 	let studentID = req.params.id
 	Student.destroy( { where: { id: studentID }})
@@ -69,8 +63,6 @@ router.delete('/students/:id', function (req, res, next) {
 		})
 		.catch(err => next(err)) // Unexpected errorz
 })
-
-
 module.exports = router 
 // any code below this⤴ line = ignored
 
@@ -80,10 +72,9 @@ module.exports = router
 // patch - modifies data
 // delete - deletes data
 
-// 404 Not Found server is unable to do the req
-// Error 500 server err
+// 404 Not Found- server is unable to do the req
+// Error 500- server err
 // Successful msgs start with 200 
-// Returning json code = success = 200 = numeric code reply not necessary
-// Status code 201 something is created 
+// Returning JSON code = Success = 200 = Numeric code reply not necessary
 
-//curl http://127.0.0.1:3000/api/students all students
+//curl http://127.0.0.1:3000/api/students (all students)
