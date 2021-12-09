@@ -51,7 +51,7 @@ export default {
 			})
 			.catch (err => {
 				let msg = err.response.data.join('.')
-				alert('ERRoR ADDING STUDENT\n' + msg)
+				alert('ERROR ADDING STUDENT\n' + msg)
 			})
 		},
 
